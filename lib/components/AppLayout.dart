@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:pocket_exercise/components/Colors.dart';
+import 'package:pocket_exercise/pages/HomePage.dart'; // Asegúrate de importar las páginas correctas
+import 'package:pocket_exercise/pages/TimerPage.dart';
+import 'package:pocket_exercise/pages/CalendarPage.dart';
 
 class AppLayout extends StatefulWidget {
-  final Widget child;
-
-  AppLayout({required this.child});
-
   @override
   _AppLayoutState createState() => _AppLayoutState();
 }
 
-//Paleta de colores:
-//bg: rgb(22, 25, 35)
-//btns and extras: rgb(40, 46, 64)
-//text and icons: rgb(157, 157, 168)
-
 class _AppLayoutState extends State<AppLayout> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 1; // Inicializa para que HomePage sea la primera página
+
+  final List<Widget> _pages = [
+    TimerPage(),
+    HomePage(),
+    CalendarPage(),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -24,34 +24,36 @@ class _AppLayoutState extends State<AppLayout> {
     });
   }
 
-  final _primaryColor = const Color.fromRGBO(22, 25, 35, 1);
-  final _secondaryColor = const Color.fromRGBO(40, 46, 64, 1);
-  final _thirdColor = const Color.fromRGBO(157, 157, 168, 1);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: _primaryColor,
-        title: const Text(
+        backgroundColor: AppColors.primary.color,
+        title: Text(
           "Pocket Exercise",
-          style: TextStyle(color: _thirdColor),
+          style: TextStyle(color: AppColors.third.color),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(child: widget.child),
-        ],
-      ),
+      body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: _secondaryColor,
-        unselectedItemColor: _thirdColor,
+        backgroundColor: AppColors.secondary.color,
+        unselectedItemColor: AppColors.third.color,
+        selectedItemColor: Colors.white, // Color de los íconos seleccionados
         showSelectedLabels: true,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        items: [
+        items: const [
           BottomNavigationBarItem(
-            icon: const Icon(Icons.home),
+            icon: Icon(Icons.timer_outlined),
+            label: 'Timer',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_outlined),
+            label: 'Calendar',
           ),
         ],
       ),
